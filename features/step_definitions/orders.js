@@ -43,4 +43,19 @@ module.exports = function () {
     this.Then(/^its status is (.*)$/, function (status) {
         expect(this.responseBody.data.attributes.status).to.equal(status);
     });
+    
+    /*Scenario: posting order*/
+    
+     this.Given(/^a valid order$/, function () {
+         //this.payload = require('../fixtures/valid-order.json')
+         this.payload ={
+            data: {
+                type: 'orders',
+                attributes: {
+                    items: [{ product_id: '598b04ea-8c20-4240-9c2b-1d36350a8d33', quantity: 1}]
+                    }
+                }
+            }
+    });
+
 }
