@@ -1,5 +1,11 @@
 module.exports = function () {
-    const expect = require('chai').expect;
+    
+    const
+        chai = require('chai'),
+        expect = chai.expect;
+        chai.use(require('chai-subset'));
+        validator = require('validator');
+
     
     this.Given(/^the system is up and running$/i,  function() {
         return this.server.then(function(server) {
@@ -7,6 +13,10 @@ module.exports = function () {
             expect(server.info.started).to.be.above(0);
             return server;
         });
+    });
+    
+   this.Given(/^a valid (\w+) payload$/, function (model) {
+        this.fixture = require('../fixtures/valid-' + model)
     });
     
     this.When(/^I do a (\w+) against the \/(.*) endpoint$/, function (verb, endpoint) {
@@ -34,4 +44,8 @@ module.exports = function () {
     this.Then(/^a payload containing the newly created resource$/, function () {
         expect(this.response.body).to.containSubset(this.fixture.request);
     });    
+    
+    this.Then(/^a payload containing the newly created id/, function () {
+        expect(validator.isUUID(this.response.body.data.id))
+    }); 
 };

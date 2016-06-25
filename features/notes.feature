@@ -1,6 +1,6 @@
-Feature: notes
+Feature: orders
     As an API client
-    I want to manage my notes
+    I want to manage my NOTES
     
 Scenario: posting notes
     Given a valid note payload
