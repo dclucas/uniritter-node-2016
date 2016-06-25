@@ -1,0 +1,24 @@
+{
+    "request": {
+        "data": {
+            "type": "products",
+            "attributes": {
+                "name": "foobar",
+                "price": -5,
+                "brand": "b",
+                "model": "m"
+            }
+        }
+    },
+    "response": {
+        "data": {
+            "type": "products",
+            "attributes": {
+                "name": "foobar",
+                "price": 10,
+                "brand": "b",
+                "model": "m"
+            }
+        }
+    }
+}
