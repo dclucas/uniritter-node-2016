@@ -19,18 +19,7 @@ module.exports = function () {
         this.fixture = require('../fixtures/valid-' + model)
     });
     
-    this.When(/^I do a (\w+) against the \/(.*) endpoint$/, function (verb, endpoint) {
-        var that = this;
-        return this.doHttpRequest(endpoint, verb, null)
-        .then(function (response) {
-            that.response = response;
-            return response;
-        }).catch(function (error) {
-            that.error = error;
-            return error;
-        });
-    });
-    
+
     this.Then(/^I receive a (\d+) status code$/, function (statusCode) {
         expect(this.response.statusCode.toString()).to.equal(statusCode);
     });
@@ -41,7 +30,12 @@ module.exports = function () {
         .spread(function (response) {
             that.response = response;
             return response;
-        });
+        })
+        .catch(error => {
+            that.response = error;
+            return error;
+            }
+        );
     });
     
     this.Then(/^a payload containing the newly created resource$/, function () {
@@ -51,4 +45,17 @@ module.exports = function () {
     this.Then(/^a payload containing the newly created id/, function () {
         expect(validator.isUUID(this.response.body.data.id))
     }); 
-};
+    
+    this.Then(/^a message saying that (.*)$/, function (model) {
+        
+        var error = this.response;
+        
+        if (model == 'is missing the name') {
+            expect( expect(this.response.body).to.containSubset("data.attributes.name") );
+        }
+        
+        if (model == 'has a negative price') {
+            expect( expect(this.response.body).to.containSubset("data.attributes.price"));
+        }
+    });
+}
